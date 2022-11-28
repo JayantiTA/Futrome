@@ -26,6 +26,14 @@ const graveSchema = new Schema(
       min: [1, 'Capacity minimum is 1, got {VALUE}'],
       required: [true, 'Capacity is required'],
     },
+    status: {
+      type: String,
+      enum: {
+        values: ['available', 'reserved'],
+        message: '{VALUE} is not a valid status',
+      },
+      required: [true, 'Status is required'],
+    },
     images: [{
       content: String,
       imageFormat: String,
