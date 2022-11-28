@@ -25,7 +25,7 @@ const reservationSchema = new Schema(
     status: {
       type: String,
       enum: {
-        values: ['pending', 'paid', 'canceled'],
+        values: ['waiting for payment', 'paid', 'cancelled'],
         message: '{VALUE} is not a valid status',
       },
       default: 'pending',
@@ -34,6 +34,9 @@ const reservationSchema = new Schema(
       type: Date,
     },
     paid_at: {
+      type: Date,
+    },
+    cancelled_at: {
       type: Date,
     },
   },
