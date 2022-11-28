@@ -12,15 +12,17 @@
     "bcrypt": "^5.1.0",
     "eslint": "^8.28.0",
     "eslint-config-next": "13.0.5",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
     "mongoose": "^6.7.3",
     "mongoose-unique-validator": "^3.1.0",
     "next": "13.0.5",
+    "next-connect": "^0.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.8.0"
   }
