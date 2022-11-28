@@ -42,6 +42,7 @@ handler
       success: true,
     });
   })
+  .use(auth('admin'))
   .post(async (req, res) => {
     await connectToDatabase();
     const grave = await Grave.create({

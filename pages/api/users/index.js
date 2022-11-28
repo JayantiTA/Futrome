@@ -18,6 +18,7 @@ const handler = nextConnect({
 });
 
 handler
+  .use(auth('admin'))
   .get(async (req, res) => {
     await connectToDatabase();
     const { limit, skip } = req.query;

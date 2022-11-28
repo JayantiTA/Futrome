@@ -18,6 +18,7 @@ const handler = nextConnect({
 });
 
 handler
+  .use(auth())
   .get(async (req, res, next) => {
     await connectToDatabase();
     const grave = await Grave.findById(req.query.graveId);

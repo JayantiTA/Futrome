@@ -14,6 +14,7 @@ const paymentSchema = new Schema(
         values: ['BRI', 'BNI', 'Mandiri', 'BSI', 'BCA'],
         message: '{VALUE} is not a valid bank option',
       },
+      required: [true, 'Bank is required'],
     },
     bank_account: {
       name: {
