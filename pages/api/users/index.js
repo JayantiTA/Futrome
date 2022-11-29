@@ -18,7 +18,7 @@ const handler = nextConnect({
 });
 
 handler
-  .use(auth('admin'))
+  .use(auth())
   .get(async (req, res) => {
     await connectToDatabase();
     const { limit, skip } = req.query;
@@ -34,6 +34,7 @@ handler
       success: true,
     });
   })
+  .use(auth('admin'))
   .post(async (req, res) => {
     const user = await createUser(req);
     return res.json({
