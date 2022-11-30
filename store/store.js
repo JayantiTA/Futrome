@@ -14,9 +14,4 @@ const useAuthStore = create(
   ),
 );
 
-const useProductStore = create((set) => ({
-  products: [],
-  setProducts: (products) => set({ products }),
-}));
-
-export { useAuthStore, useProductStore };
+export { useAuthStore };
