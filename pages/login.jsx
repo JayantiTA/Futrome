@@ -13,11 +13,11 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
 
 import { useAuthStore } from '../store/store';
+import DefaultInput from '../components/input/DefaultInput';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -64,6 +64,31 @@ export default function Login() {
   const [isAlertOpened, setIsAlertOpened] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  const formInputs = [
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Username',
+        type: 'text',
+        value: user.username,
+        onChange: (e) => setUser({ ...user, username: e.target.value }),
+        error: errors?.errors?.username,
+        isLoading,
+      },
+    },
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Password',
+        type: 'password',
+        value: user.password,
+        onChange: (e) => setUser({ ...user, password: e.target.value }),
+        error: errors?.errors?.password,
+        isLoading,
+      },
+    },
+  ];
 
   const signIn = (event) => {
     event.preventDefault();
@@ -135,30 +160,9 @@ export default function Login() {
             </Alert>
           </Snackbar>
           <Box component="form" noValidate onSubmit={signIn} sx={{ mt: 5 }}>
-            <TextField
-              error={errors?.errors?.username}
-              helperText={errors?.errors?.username}
-              margin="normal"
-              required
-              fullWidth
-              label="Username"
-              name="username"
-              autoFocus
-              onChange={(event) => setUser({ ...user, username: event.target.value })}
-              disabled={isLoading}
-            />
-            <TextField
-              error={errors?.errors?.password}
-              helperText={errors?.errors?.password}
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              onChange={(event) => setUser({ ...user, password: event.target.value })}
-              disabled={isLoading}
-            />
+            {formInputs.map((input) => (
+              <input.component {...input.props} />
+            ))}
             <LoadingButton
               loading={isLoading}
               type="submit"

@@ -13,9 +13,10 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
+
+import DefaultInput from '../components/input/DefaultInput';
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -59,6 +60,75 @@ export default function Login() {
   const [isAlertOpened, setIsAlertOpened] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
+  const formInputs = [
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Email',
+        type: 'email',
+        value: user.email,
+        onChange: (e) => setUser({ ...user, email: e.target.value }),
+        error: errors?.errors?.email,
+        isLoading,
+      },
+    },
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Username',
+        type: 'text',
+        value: user.username,
+        onChange: (e) => setUser({ ...user, username: e.target.value }),
+        error: errors?.errors?.username,
+        isLoading,
+      },
+    },
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Full Name',
+        type: 'text',
+        value: user.full_name,
+        onChange: (e) => setUser({ ...user, full_name: e.target.value }),
+        error: errors?.errors?.full_name,
+        isLoading,
+      },
+    },
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Phone Number',
+        type: 'text',
+        value: user.phone_number,
+        onChange: (e) => setUser({ ...user, phone_number: e.target.value }),
+        error: errors?.errors?.phone_number,
+        isLoading,
+      },
+    },
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Password',
+        type: 'password',
+        value: user.password,
+        onChange: (e) => setUser({ ...user, password: e.target.value }),
+        error: errors?.errors?.password,
+        isLoading,
+      },
+    },
+    {
+      component: DefaultInput,
+      props: {
+        label: 'Confirm Password',
+        type: 'password',
+        value: user.confirm_password,
+        onChange: (e) => setUser({ ...user, confirm_password: e.target.value }),
+        error: errors?.errors?.confirm_password,
+        isLoading,
+      },
+    },
+  ];
 
   const signUp = (event) => {
     event.preventDefault();
@@ -130,78 +200,9 @@ export default function Login() {
             </Alert>
           </Snackbar>
           <Box component="form" noValidate onSubmit={signUp} sx={{ mt: 2 }}>
-            <TextField
-              error={errors?.errors?.email}
-              helperText={errors?.errors?.email}
-              margin="normal"
-              required
-              fullWidth
-              label="Email"
-              name="email"
-              autoFocus
-              onChange={(event) => setUser({ ...user, email: event.target.value })}
-              disabled={isLoading}
-            />
-            <TextField
-              error={errors?.errors?.username}
-              helperText={errors?.errors?.username}
-              margin="normal"
-              required
-              fullWidth
-              label="Username"
-              name="username"
-              autoFocus
-              onChange={(event) => setUser({ ...user, username: event.target.value })}
-              disabled={isLoading}
-            />
-            <TextField
-              error={errors?.errors?.full_name}
-              helperText={errors?.errors?.full_name}
-              margin="normal"
-              required
-              fullWidth
-              label="Full Name"
-              name="full_name"
-              autoFocus
-              onChange={(event) => setUser({ ...user, full_name: event.target.value })}
-              disabled={isLoading}
-            />
-            <TextField
-              error={errors?.errors?.phone_number}
-              helperText={errors?.errors?.phone_number}
-              margin="normal"
-              required
-              fullWidth
-              label="Phone Number"
-              name="phone_number"
-              autoFocus
-              onChange={(event) => setUser({ ...user, phone_number: event.target.value })}
-              disabled={isLoading}
-            />
-            <TextField
-              error={errors?.errors?.password}
-              helperText={errors?.errors?.password}
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              onChange={(event) => setUser({ ...user, password: event.target.value })}
-              disabled={isLoading}
-            />
-            <TextField
-              error={errors?.errors?.confirm_password}
-              helperText={errors?.errors?.confirm_password}
-              margin="normal"
-              required
-              fullWidth
-              name="confirm_password"
-              label="Confirm Password"
-              type="password"
-              onChange={(event) => setUser({ ...user, confirm_password: event.target.value })}
-              disabled={isLoading}
-            />
+            {formInputs.map((input) => (
+              <input.component {...input.props} />
+            ))}
             <LoadingButton
               loading={isLoading}
               type="submit"
@@ -216,7 +217,7 @@ export default function Login() {
               <Typography className={classes.typography}>
                 Already have an account? &nbsp;
                 <a style={{ textDecoration: 'underline' }}>
-                  <Link href="/register">Sign In</Link>
+                  <Link href="/login">Sign In</Link>
                 </a>
               </Typography>
             </Grid>
