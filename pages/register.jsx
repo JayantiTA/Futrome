@@ -71,6 +71,7 @@ export default function Login() {
         onChange: (e) => setUser({ ...user, email: e.target.value }),
         error: errors?.errors?.email,
         isLoading,
+        autofocus: true,
       },
     },
     {
