@@ -4,12 +4,11 @@ import TextField from '@mui/material/TextField';
 
 export default function DefaultInput(props) {
   const {
-    label, type, value, onChange, error, isLoading, autofocus,
+    label, type, value, onChange, error, isLoading, autoFocus,
   } = props;
 
   return (
     <TextField
-      autofocus={autofocus}
       error={error}
       helperText={error}
       margin="normal"
@@ -18,6 +17,7 @@ export default function DefaultInput(props) {
       label={label}
       type={type}
       value={value}
+      autoFocus={autoFocus}
       onChange={onChange}
       disabled={isLoading}
     />

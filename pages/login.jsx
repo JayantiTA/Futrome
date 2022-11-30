@@ -75,7 +75,7 @@ export default function Login() {
         onChange: (e) => setUser({ ...user, username: e.target.value }),
         error: errors?.errors?.username,
         isLoading,
-        autofocus: true,
+        autoFocus: true,
       },
     },
     {
