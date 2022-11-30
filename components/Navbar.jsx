@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -12,13 +13,30 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import { makeStyles } from '@mui/styles';
 
-const pages = ['Home', 'About', 'Services', 'Memorial Property', 'Contact'];
-const settings = ['Profile', 'Logout'];
+import { useAuthStore } from '../store/store';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: theme.palette.white.main,
+    color: theme.palette.green.main,
+    padding: '0.5rem 1rem',
+    '&:hover': {
+      backgroundColor: theme.palette.green.light,
+    },
+  },
+}));
 
 function Navbar() {
+  const classes = useStyles();
+  const router = useRouter();
+  const user = useAuthStore((state) => state.session?.user);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const pages = ['Home', 'About', 'Services', 'Memorial Property', 'Contact'];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,6 +52,22 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const showProfile = () => {
+    handleCloseUserMenu();
+    router.push('/profile');
+  };
+
+  const logOut = () => {
+    useAuthStore.setState({ session: undefined });
+    router.push('/');
+  };
+
+  const toSnakeCase = (str) => str
+  && str
+    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+    .map((x) => x.toLowerCase())
+    .join('_');
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#195A00' }}>
@@ -89,7 +123,9 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Link href={`/${toSnakeCase(page)}`}>
+                    {page}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -121,7 +157,7 @@ function Navbar() {
                 onClick={handleCloseNavMenu}
                 sx={{ mx: 2, color: 'white', display: 'block' }}
               >
-                <Link href="/">
+                <Link href={`/${toSnakeCase(page)}`}>
                   {page}
                 </Link>
               </Typography>
@@ -129,16 +165,22 @@ function Navbar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenUserMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {user?.id ? (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenUserMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            ) : (
+              <Button href="/login" className={classes.button}>
+                Sign In
+              </Button>
+            )}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -155,11 +197,8 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={showProfile}>Profile</MenuItem>
+              <MenuItem onClick={logOut}>Logout</MenuItem>
             </Menu>
           </Box>
         </Toolbar>
