@@ -47,7 +47,7 @@ export default function Home() {
             Pesan Sekarang
           </Button>
         </Card>
-        <Image src="/home/image.svg" width={450} height={450} />
+        <Image src="/images/image_home.svg" width={450} height={450} />
       </Box>
     </>
   );
