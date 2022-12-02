@@ -10,6 +10,7 @@ import PinDropIcon from '@mui/icons-material/PinDrop';
 import { makeStyles } from '@mui/styles';
 
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home() {
+export default function Contact() {
   const classes = useStyles();
 
   return (
@@ -36,10 +37,10 @@ export default function Home() {
       }}
       >
         <Card sx={{ boxShadow: 'none', maxWidth: 600, margin: 10 }}>
-          <Typography variant="h2" fontWeight={700} sx={{ color: '#195A00', mb: 4 }}>Hubungi Kami</Typography>
+          <Typography variant="h3" fontWeight={700} sx={{ color: '#195A00', mb: 4 }}>Hubungi Kami</Typography>
           <Typography variant="h6" sx={{ my: 2 }}>
             <PhoneIcon />
-            &nbsp;081233294678
+            &nbsp;081233294689
           </Typography>
           <Typography variant="h6" sx={{ my: 2 }}>
             <PinDropIcon />
@@ -48,12 +49,13 @@ export default function Home() {
           <Typography variant="h6" sx={{ my: 2 }}>
             Jln. Keputih No. 100, Surabaya
           </Typography>
-          <Button className={classes.button}>
+          <Button className={classes.button} href="https://wa.me/6281233294689">
             Kirim Pesan
           </Button>
         </Card>
         <Image src="/images/image_contact.svg" width={450} height={450} />
       </Box>
+      <Footer />
     </>
   );
 }

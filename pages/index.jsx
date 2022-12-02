@@ -1,11 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Home from './home';
 
-export default function Home() {
+export default function LandingPage() {
   return (
     <div>
       <Head>
@@ -14,10 +12,8 @@ export default function Home() {
         <link rel="icon" href="/logo_green.svg" />
       </Head>
 
-      <Navbar />
-      <main className={styles.main} />
+      <Home />
 
-      <Footer />
     </div>
   );
 }

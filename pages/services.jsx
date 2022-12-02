@@ -2,13 +2,32 @@ import React from 'react';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/styles';
 
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
-export default function Home() {
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: theme.palette.green.main,
+    color: theme.palette.white.main,
+    padding: '0.5rem 1.5rem',
+    textTransform: 'none',
+    fontSize: 23,
+    marginTop: 30,
+    '&:hover': {
+      backgroundColor: theme.palette.green.hover,
+    },
+  },
+}));
+
+export default function Services() {
+  const classes = useStyles();
+
   return (
     <>
       <Navbar />
@@ -32,8 +51,8 @@ export default function Home() {
           Hanya 4 Langkah untuk Memesan Lahan Pemakaman
         </Typography>
       </Box>
-      <Box marginBottom={15}>
-        <Grid container spacing={2} margin={5}>
+      <Box marginBottom={15} marginLeft={12}>
+        <Grid container spacing={2} marginY={5}>
           <Grid item xs={12} md={3}>
             <Card sx={{ boxShadow: 'none', maxWidth: 250 }}>
               <Typography variant="h1" fontWeight={700} sx={{ color: '#D1D6D0' }}>01</Typography>
@@ -79,7 +98,11 @@ export default function Home() {
             </Card>
           </Grid>
         </Grid>
+        <Button variant="contained" className={classes.button} href="/types">
+          Pesan Sekarang
+        </Button>
       </Box>
+      <Footer />
     </>
   );
 }

@@ -43,7 +43,7 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const pages = ['Home', 'About', 'Services', 'Memorial Property', 'Contact'];
+  const pages = ['Home', 'About', 'Services', 'Types', 'Contact'];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

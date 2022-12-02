@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -43,12 +44,13 @@ export default function Home() {
             Konsep baru sebuah taman pemakaman Islam unik dan terpadu
             kini hadir di Indonesia.
           </Typography>
-          <Button className={classes.button}>
+          <Button className={classes.button} href="/types">
             Pesan Sekarang
           </Button>
         </Card>
         <Image src="/images/image_home.svg" width={450} height={450} />
       </Box>
+      <Footer />
     </>
   );
 }
