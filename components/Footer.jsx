@@ -12,7 +12,7 @@ export default function Footer() {
       justifyContent: 'center',
       backgroundColor: '#195A00',
       padding: 2,
-      marginTop: 20,
+      marginTop: 15,
     }}
     >
       <Typography variant="h7" sx={{ color: '#FFFFFF' }}>&#169;&nbsp;Futrome 2022</Typography>
