@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -23,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.white.main,
     color: theme.palette.green.main,
     padding: '0.5rem 1rem',
+    textTransform: 'none',
+    fontWeight: 600,
     '&:hover': {
       backgroundColor: theme.palette.green.light,
     },
+  },
+  currentPage: {
+    textDecoration: 'underline',
+    fontWeight: 700,
   },
 }));
 
@@ -36,7 +43,7 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const pages = ['Home', 'About', 'Services', 'Memorial Property', 'Contact'];
+  const pages = ['Home', 'About', 'Services', 'Types', 'Contact'];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -155,7 +162,8 @@ function Navbar() {
               <Typography
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ mx: 2, color: 'white', display: 'block' }}
+                sx={{ mx: 2, color: 'white' }}
+                className={clsx({ [classes.currentPage]: router.pathname === `/${toSnakeCase(page)}` })}
               >
                 <Link href={`/${toSnakeCase(page)}`}>
                   {page}
