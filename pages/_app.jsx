@@ -37,6 +37,8 @@ export default function MyApp(props) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>Futrome</title>
+        <link rel="icon" href="/logo_green.svg" />
       </Head>
       <ThemeProvider theme={theme}>
         <NoSsr>
