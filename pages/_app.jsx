@@ -7,6 +7,9 @@ import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import createEmotionCache from '../helper/createEmotionCache';
 
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+
 const theme = createTheme({
   palette: {
     grey: {
@@ -42,7 +45,9 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <NoSsr>
+          <Navbar />
           <Component {...pageProps} />
+          <Footer />
         </NoSsr>
       </ThemeProvider>
     </CacheProvider>

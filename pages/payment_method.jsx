@@ -9,9 +9,6 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { makeStyles } from '@mui/styles';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-
 const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: theme.palette.green.main,
@@ -52,47 +49,43 @@ export default function PaymentMethod() {
   ];
 
   return (
-    <>
-      <Navbar />
-      <Box marginY={7}>
+    <Box marginY={7}>
+      <Box sx={{
+        borderBottom: 1, borderColor: 'divider', maxWidth: 400, mx: 'auto', display: 'flex', justifyContent: 'center',
+      }}
+      >
+        <Typography variant="h4" fontWeight={700} sx={{ color: '#195A00', my: 2, mx: 'auto' }}>
+          Jenis Pembayaran
+        </Typography>
+      </Box>
+      <Box border={1} borderColor="#B6BCA4" maxWidth={700} borderRadius={5} marginX="auto" marginY={5}>
         <Box sx={{
-          borderBottom: 1, borderColor: 'divider', maxWidth: 400, mx: 'auto', display: 'flex', justifyContent: 'center',
+          display: 'flex', alignItems: 'center', paddingX: 15,
         }}
         >
-          <Typography variant="h4" fontWeight={700} sx={{ color: '#195A00', my: 2, mx: 'auto' }}>
-            Jenis Pembayaran
-          </Typography>
+          <Table>
+            <TableBody>
+              {bankTransfer.map((bank) => (
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="h6" sx={{ color: '#333333', my: 2 }}>
+                      {bank.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h6" fontWeight={700} sx={{ color: '#195A00', my: 2 }}>
+                      {bank.number}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Box>
-        <Box border={1} borderColor="#B6BCA4" maxWidth={700} borderRadius={5} marginX="auto" marginY={5}>
-          <Box sx={{
-            display: 'flex', alignItems: 'center', paddingX: 15,
-          }}
-          >
-            <Table>
-              <TableBody>
-                {bankTransfer.map((bank) => (
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="h6" sx={{ color: '#333333', my: 2 }}>
-                        {bank.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="h6" fontWeight={700} sx={{ color: '#195A00', my: 2 }}>
-                        {bank.number}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        </Box>
-        <Button variant="contained" className={classes.button}>
-          Kembali ke pesanan
-        </Button>
       </Box>
-      <Footer />
-    </>
+      <Button variant="contained" className={classes.button}>
+        Kembali ke pesanan
+      </Button>
+    </Box>
   );
 }
