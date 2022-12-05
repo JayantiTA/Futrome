@@ -12,15 +12,38 @@ const reservationSchema = new Schema(
       location: {
         type: String,
       },
+      type: {
+        type: String,
+        enum: {
+          values: ['single', 'semi private', 'private'],
+          message: '{VALUE} is not a valid status',
+        },
+        required: [true, 'Size is required'],
+      },
       price: {
         type: Number,
         min: [1, 'Price minimum is 1, got {VALUE}'],
       },
       _id: false,
     },
-    buyer_id: {
-      type: Schema.Types.ObjectId,
-      required: [true, 'Buyer ID is required'],
+    buyer: {
+      id: {
+        type: Schema.Types.ObjectId,
+        required: [true, 'Buyer ID is required'],
+      },
+      name: {
+        type: String,
+        required: [true, 'Buyer name is required'],
+      },
+      ktp: {
+        type: String,
+        required: [true, 'Buyer KTP is required'],
+      },
+      phone_number: {
+        type: String,
+        required: [true, 'Buyer phone number is required'],
+      },
+      _id: false,
     },
     status: {
       type: String,

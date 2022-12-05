@@ -20,8 +20,8 @@ handler
   .use(auth())
   .post(async (req, res) => {
     await connectToDatabase();
+    console.log(req.body);
     const reservation = await Reservation.create({
-      buyer_id: req.user._id,
       status: 'waiting for payment',
       ...req.body,
       reserved_at: new Date(),

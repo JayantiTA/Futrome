@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PaymentMethod() {
   const classes = useStyles();
+  const router = useRouter();
   const bankTransfer = [
     {
       name: 'Mandiri Transfer',
@@ -47,6 +49,10 @@ export default function PaymentMethod() {
       number: '1234567890',
     },
   ];
+
+  const handleAction = () => {
+    router.back();
+  };
 
   return (
     <Box marginY={7}>
@@ -83,7 +89,7 @@ export default function PaymentMethod() {
           </Table>
         </Box>
       </Box>
-      <Button variant="contained" className={classes.button}>
+      <Button variant="contained" className={classes.button} onClick={() => handleAction()}>
         Kembali ke pesanan
       </Button>
     </Box>

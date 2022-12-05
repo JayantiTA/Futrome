@@ -4,7 +4,6 @@ import auth from '../../../middleware/auth';
 import connectToDatabase from '../../../lib/mongoose';
 import Grave from '../../../models/grave';
 
-import { encodeBase64Image } from '../../../helper/image';
 import { notFoundError, errorHandler } from '../../../helper/error';
 
 const handler = nextConnect({
@@ -31,10 +30,7 @@ handler
     }
 
     return res.json({
-      data: {
-        ...grave._doc,
-        images: grave.images.map((image) => encodeBase64Image(image)),
-      },
+      data: grave,
       message: 'Success',
       success: true,
     });
