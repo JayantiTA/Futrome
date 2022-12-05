@@ -166,21 +166,10 @@ export default function Invoice() {
   };
 
   useEffect(() => {
+    getData();
+    setCurrentGrave({});
     router.replace({ query: { ...router.query, value } });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
-  useEffect(() => {
-    if (session === undefined) {
-      router.push('/login');
-    } else {
-      getData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
-
-  useEffect(() => {
-    setCurrentGrave({});
   }, [value]);
 
   const graves = gravesData.map((grave) => ({
