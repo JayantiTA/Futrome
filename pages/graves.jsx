@@ -16,8 +16,6 @@ import Tab from '@mui/material/Tab';
 import TabPanel from '@mui/lab/TabPanel';
 import { makeStyles } from '@mui/styles';
 
-import { useAuthStore } from '../store/store';
-
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'IDR',
@@ -138,7 +136,6 @@ function GravesPosition(props) {
 export default function Invoice() {
   const classes = useStyles();
   const router = useRouter();
-  const session = useAuthStore((state) => state.session);
   const [isLoading, setIsLoading] = useState(false);
   const [currentGrave, setCurrentGrave] = useState({});
   const [gravesData, setGravesData] = useState([]);
