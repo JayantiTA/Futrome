@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
@@ -41,10 +42,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Types() {
   const classes = useStyles();
-  const [value, setValue] = useState('1');
+  const router = useRouter();
+  const [value, setValue] = useState('single');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleAction = (tabValue) => {
+    router.push({ pathname: '/graves', query: { value: tabValue } });
   };
 
   return (
@@ -62,12 +68,12 @@ export default function Types() {
             aria-label="lab API tabs example"
             className={classes.tabList}
           >
-            <Tab label="Single" value="1" />
-            <Tab label="Semi Private" value="2" />
-            <Tab label="Private" value="3" />
+            <Tab label="Single" value="single" />
+            <Tab label="Semi Private" value="semi private" />
+            <Tab label="Private" value="private" />
           </TabList>
         </Box>
-        <TabPanel value="1">
+        <TabPanel value="single">
           <Box sx={{
             display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
           }}
@@ -79,13 +85,13 @@ export default function Types() {
                 digunakan. Tipe ini berukuran 1,5x2,6 meter2 dan dapat menampung
                 maksimal 1 orang. Harga untuk tipe ini mulai dari Rp 10.000.000,-.
               </Typography>
-              <Button className={classes.button}>
+              <Button className={classes.button} onClick={() => handleAction(value)}>
                 Cek Ketersediaan
               </Button>
             </Box>
           </Box>
         </TabPanel>
-        <TabPanel value="2">
+        <TabPanel value="semi private">
           <Box sx={{
             display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
           }}
@@ -96,14 +102,14 @@ export default function Types() {
                 pasangan. Tipe ini berukuran 11-15 meter2 dan dapat menampung
                 sebanyak 2-3 orang. Harga untuk tipe ini mulai dari Rp 35.000.000,-.
               </Typography>
-              <Button className={classes.button}>
+              <Button className={classes.button} onClick={() => handleAction(value)}>
                 Cek Ketersediaan
               </Button>
             </Box>
             <Image src="/images/image_semiprivate.svg" width={500} height={400} />
           </Box>
         </TabPanel>
-        <TabPanel value="3">
+        <TabPanel value="private">
           <Box sx={{
             display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
           }}
@@ -115,7 +121,7 @@ export default function Types() {
                 atau kelompok orang. Tipe ini berukuran 30-50 meter2 dan dapat menampung
                 sebanyak 2-14 orang. Harga untuk tipe ini mulai dari Rp 100.000.000,-.
               </Typography>
-              <Button className={classes.button}>
+              <Button className={classes.button} onClick={() => handleAction(value)}>
                 Cek Ketersediaan
               </Button>
             </Box>
