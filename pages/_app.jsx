@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import createEmotionCache from '../helper/createEmotionCache';
 
+import AuthGuard from '../components/AuthGuard';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -45,13 +46,15 @@ export default function MyApp(props) {
         <title>Futrome</title>
         <link rel="icon" href="/logo_green.svg" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <NoSsr>
-          {router.pathname !== '/login' && router.pathname !== '/register' && (<Navbar />)}
-          <Component {...pageProps} />
-          {router.pathname !== '/login' && router.pathname !== '/register' && (<Footer />)}
-        </NoSsr>
-      </ThemeProvider>
+      <AuthGuard>
+        <ThemeProvider theme={theme}>
+          <NoSsr>
+            {router.pathname !== '/login' && router.pathname !== '/register' && (<Navbar />)}
+            <Component {...pageProps} />
+            {router.pathname !== '/login' && router.pathname !== '/register' && (<Footer />)}
+          </NoSsr>
+        </ThemeProvider>
+      </AuthGuard>
     </CacheProvider>
   );
 }
