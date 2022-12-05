@@ -6,6 +6,7 @@ import { CacheProvider } from '@emotion/react';
 import { ThemeProvider } from '@mui/styles';
 import { createTheme } from '@mui/material/styles';
 import createEmotionCache from '../helper/createEmotionCache';
+import AuthGuard from '../components/AuthGuard';
 
 const theme = createTheme({
   palette: {
@@ -38,11 +39,13 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <NoSsr>
-          <Component {...pageProps} />
-        </NoSsr>
-      </ThemeProvider>
+      <AuthGuard>
+        <ThemeProvider theme={theme}>
+          <NoSsr>
+            <Component {...pageProps} />
+          </NoSsr>
+        </ThemeProvider>
+      </AuthGuard>
     </CacheProvider>
   );
 }
