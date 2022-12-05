@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const reservationSchema = new Schema(
   {
-    graves: [{
+    grave: {
       id: {
         type: Schema.Types.ObjectId,
         default: new mongoose.Types.ObjectId(),
@@ -17,7 +17,7 @@ const reservationSchema = new Schema(
         min: [1, 'Price minimum is 1, got {VALUE}'],
       },
       _id: false,
-    }],
+    },
     buyer_id: {
       type: Schema.Types.ObjectId,
       required: [true, 'Buyer ID is required'],

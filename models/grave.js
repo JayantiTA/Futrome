@@ -21,6 +21,10 @@ const graveSchema = new Schema(
       min: [1, 'Size is 1m2, got {VALUE}m2'],
       required: [true, 'Size is required'],
     },
+    description: {
+      type: String,
+      required: [true, 'Description is required'],
+    },
     capacity: {
       type: Number,
       min: [1, 'Capacity minimum is 1, got {VALUE}'],

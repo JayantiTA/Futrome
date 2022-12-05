@@ -1,6 +1,7 @@
 import * as React from 'react';
 import '../styles/globals.css';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import NoSsr from '@mui/material/NoSsr';
 import { CacheProvider } from '@emotion/react';
 import { ThemeProvider } from '@mui/styles';
@@ -35,6 +36,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const router = useRouter();
 
   return (
     <CacheProvider value={emotionCache}>
@@ -45,9 +47,9 @@ export default function MyApp(props) {
       </Head>
       <ThemeProvider theme={theme}>
         <NoSsr>
-          <Navbar />
+          {router.pathname !== '/login' && router.pathname !== '/register' && (<Navbar />)}
           <Component {...pageProps} />
-          <Footer />
+          {router.pathname !== '/login' && router.pathname !== '/register' && (<Footer />)}
         </NoSsr>
       </ThemeProvider>
     </CacheProvider>
