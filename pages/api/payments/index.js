@@ -22,7 +22,7 @@ handler
   .use(auth())
   .post(async (req, res, next) => {
     await connectToDatabase();
-    const filter = { _id: req.body.reservation_id, buyer: {} };
+    const filter = { _id: req.body.reservation_id };
     if (req.user.role !== 'admin') {
       filter.buyer.id = req.user._id;
     }

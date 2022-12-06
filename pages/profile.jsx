@@ -32,7 +32,7 @@ export default function Invoice() {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [reservations, setReservations] = useState([]);
-  const [totalRecords, setTotalRecorda] = useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const getData = async () => {
     try {
@@ -51,7 +51,7 @@ export default function Invoice() {
         },
       });
       setReservations(response.data.data.reservations);
-      setTotalRecorda(response.data.data.total_records);
+      setTotalRecords(response.data.data.total_records);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

@@ -38,7 +38,7 @@ handler
     }
 
     const grave = await Grave.findByIdAndUpdate(
-      req.body.grave?.id,
+      reservation.grave.id,
       {
         status: 'available',
         updated_at: new Date(),

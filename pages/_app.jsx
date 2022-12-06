@@ -40,7 +40,7 @@ export default function MyApp(props) {
   const router = useRouter();
 
   const pages = ['/login', '/register', '/admin'];
-  const routerPage = !pages.includes(router.pathname);
+  const routerPage = pages.map((page) => router.pathname.includes(page)).includes(true);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -52,9 +52,9 @@ export default function MyApp(props) {
       <AuthGuard>
         <ThemeProvider theme={theme}>
           <NoSsr>
-            {routerPage && (<Navbar />)}
+            {!routerPage && (<Navbar />)}
             <Component {...pageProps} />
-            {routerPage && (<Footer />)}
+            {!routerPage && (<Footer />)}
           </NoSsr>
         </ThemeProvider>
       </AuthGuard>

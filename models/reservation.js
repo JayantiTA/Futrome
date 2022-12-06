@@ -9,6 +9,10 @@ const reservationSchema = new Schema(
         type: Schema.Types.ObjectId,
         default: new mongoose.Types.ObjectId(),
       },
+      location: {
+        type: String,
+        required: [true, 'Location is required'],
+      },
       price: {
         type: Number,
         required: [true, 'Price is required'],

@@ -266,7 +266,7 @@ export default function Pay() {
       <ModalConfirmation
         open={showModalCofirmation}
         handleClose={handleShowConfirmation}
-        handleConfirm={handleCancel}
+        handleConfirm={() => handleCancel()}
         isLoading={isLoading}
       />
     </Box>

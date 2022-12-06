@@ -22,7 +22,7 @@ handler
     await connectToDatabase();
     const { limit, skip } = req.query;
 
-    const filter = { buyer: {} };
+    const filter = {};
     if (req.user.role !== 'admin') {
       filter.buyer.id = req.user._id;
     }
