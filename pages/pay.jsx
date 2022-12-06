@@ -226,7 +226,7 @@ export default function Pay() {
         },
       });
     } catch (error) {
-      // eslint-disable-next-line no-undef
+      // eslint-disable-next-line no-console
       console.error(error);
     }
     setIsLoading(false);
