@@ -4,7 +4,6 @@ import auth from '../../../middleware/auth';
 import connectToDatabase from '../../../lib/mongoose';
 import Grave from '../../../models/grave';
 
-import { decodeBase64Image, encodeBase64Image } from '../../../helper/image';
 import { notFoundError, errorHandler } from '../../../helper/error';
 
 export const config = {
@@ -29,45 +28,39 @@ handler
   .get(async (req, res) => {
     await connectToDatabase();
     const { limit, skip } = req.query;
-
-    let graves = await Grave.find({}).limit(limit).skip(limit * skip);
-    graves = graves.map((product) => ({
-      ...product._doc,
-      images: product.images.map((image) => encodeBase64Image(image)),
-    }));
+    const totalRecords = await Grave.countDocuments();
+    const graves = await Grave.find({}).limit(limit).skip(limit * skip);
 
     return res.json({
-      data: graves,
+      data: {
+        total_records: totalRecords,
+        graves,
+      },
       message: 'Success',
       success: true,
     });
   })
-  .use(auth('admin'))
+  .use(auth(''))
   .post(async (req, res) => {
     await connectToDatabase();
     const grave = await Grave.create({
       ...req.body,
-      images: req.body.images.map((image) => decodeBase64Image(image)),
       created_at: new Date(),
       updated_at: new Date(),
     });
 
     return res.json({
       message: 'Grave added successfully',
-      data: {
-        ...grave._doc,
-        images: grave.images.map((image) => encodeBase64Image(image)),
-      },
+      data: grave,
       success: true,
     });
   })
   .put(async (req, res, next) => {
     await connectToDatabase();
-    const grave = await Grave.findOneAndUpdate(
+    const grave = await Grave.findByIdAndUpdate(
       req.body._id,
       {
         ...req.body.data,
-        images: req.body.data.images.map((image) => decodeBase64Image(image)),
         updated_at: new Date(),
       },
       {
@@ -86,10 +79,7 @@ handler
 
     return res.json({
       message: 'Grave updated successfully',
-      data: {
-        ...grave._doc,
-        images: grave.images.map((image) => encodeBase64Image(image)),
-      },
+      data: grave,
       success: true,
     });
   })
@@ -106,10 +96,7 @@ handler
 
     return res.json({
       message: 'Grave deleted successfully',
-      data: {
-        ...grave._doc,
-        images: grave.images.map((image) => encodeBase64Image(image)),
-      },
+      data: grave,
       success: true,
     });
   });

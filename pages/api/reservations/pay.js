@@ -45,8 +45,8 @@ handler
 
     const payment = await Payment.create({
       reservation_id: reservation._id,
-      ...req.body,
-      attachment: decodeBase64Image(req.body.attachment),
+      ...req.body.data,
+      attachment: decodeBase64Image(req.body.data.attachment),
     });
 
     return res.json({

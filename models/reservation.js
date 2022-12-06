@@ -4,28 +4,44 @@ const { Schema } = mongoose;
 
 const reservationSchema = new Schema(
   {
-    graves: [{
+    grave: {
       id: {
         type: Schema.Types.ObjectId,
         default: new mongoose.Types.ObjectId(),
       },
       location: {
         type: String,
+        required: [true, 'Location is required'],
       },
       price: {
         type: Number,
-        min: [1, 'Price minimum is 1, got {VALUE}'],
+        required: [true, 'Price is required'],
       },
       _id: false,
-    }],
+    },
     buyer_id: {
       type: Schema.Types.ObjectId,
       required: [true, 'Buyer ID is required'],
     },
+    buyer_data: {
+      name: {
+        type: String,
+        required: [true, 'Buyer name is required'],
+      },
+      ktp: {
+        type: String,
+        required: [true, 'Buyer KTP is required'],
+      },
+      phone_number: {
+        type: String,
+        required: [true, 'Buyer phone number is required'],
+      },
+      _id: false,
+    },
     status: {
       type: String,
       enum: {
-        values: ['waiting for payment', 'waiting for confirmation', 'paid', 'cancelled'],
+        values: ['waiting for payment', 'waiting for confirmation', 'paid', 'cancelled', 'done'],
         message: '{VALUE} is not a valid status',
       },
       default: 'pending',

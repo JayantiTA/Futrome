@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
+const uniqueValidator = require('mongoose-unique-validator');
 
 const graveSchema = new Schema(
   {
@@ -15,16 +16,26 @@ const graveSchema = new Schema(
     location: {
       type: String,
       required: [true, 'Location is required'],
+      unique: true,
     },
     size: {
       type: Number,
       min: [1, 'Size is 1m2, got {VALUE}m2'],
       required: [true, 'Size is required'],
     },
+    description: {
+      type: String,
+      required: [true, 'Description is required'],
+    },
     capacity: {
       type: Number,
       min: [1, 'Capacity minimum is 1, got {VALUE}'],
       required: [true, 'Capacity is required'],
+    },
+    price: {
+      type: Number,
+      min: [1, 'Price minimum is 1, got {VALUE}'],
+      required: [true, 'Price is required'],
     },
     status: {
       type: String,
@@ -34,10 +45,6 @@ const graveSchema = new Schema(
       },
       required: [true, 'Status is required'],
     },
-    images: [{
-      content: String,
-      imageFormat: String,
-    }],
   },
   {
     timestamps: {
@@ -46,6 +53,8 @@ const graveSchema = new Schema(
     },
   },
 );
+
+graveSchema.plugin(uniqueValidator, { message: 'This {PATH} is already exists.' });
 
 export default (mongoose.models && mongoose.models.Grave
   ? mongoose.models.Grave

@@ -4,7 +4,6 @@ import auth from '../../../middleware/auth';
 import connectToDatabase from '../../../lib/mongoose';
 import User from '../../../models/user';
 
-import { encodeBase64Image } from '../../../helper/image';
 import { notFoundError, errorHandler } from '../../../helper/error';
 
 const handler = nextConnect({
@@ -31,10 +30,7 @@ handler
     }
 
     return res.json({
-      data: {
-        ...user._doc,
-        images: user.images.map((image) => encodeBase64Image(image)),
-      },
+      data: user,
       message: 'Success',
       success: true,
     });

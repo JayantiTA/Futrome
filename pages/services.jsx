@@ -8,9 +8,6 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-
 const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: theme.palette.green.main,
@@ -30,7 +27,6 @@ export default function Services() {
 
   return (
     <>
-      <Navbar />
       <Box sx={{
         display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center', my: 7,
       }}
@@ -102,7 +98,6 @@ export default function Services() {
           Pesan Sekarang
         </Button>
       </Box>
-      <Footer />
     </>
   );
 }

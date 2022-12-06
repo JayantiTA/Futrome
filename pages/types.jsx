@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
@@ -9,9 +10,6 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { makeStyles } from '@mui/styles';
-
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -44,91 +42,92 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Types() {
   const classes = useStyles();
-  const [value, setValue] = useState('1');
+  const router = useRouter();
+  const [value, setValue] = useState('single');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const handleAction = (tabValue) => {
+    router.push({ pathname: '/graves', query: { value: tabValue } });
+  };
+
   return (
-    <>
-      <Navbar />
-      <Box sx={{
-        width: '100%', marginY: 5,
-      }}
-      >
-        <TabContext value={value}>
+    <Box sx={{
+      width: '100%', marginY: 5,
+    }}
+    >
+      <TabContext value={value}>
+        <Box sx={{
+          borderBottom: 1, borderColor: 'divider', maxWidth: 350, display: 'flex', justifyContent: 'center', marginX: 'auto',
+        }}
+        >
+          <TabList
+            onChange={handleChange}
+            aria-label="lab API tabs example"
+            className={classes.tabList}
+          >
+            <Tab label="Single" value="single" />
+            <Tab label="Semi Private" value="semi private" />
+            <Tab label="Private" value="private" />
+          </TabList>
+        </Box>
+        <TabPanel value="single">
           <Box sx={{
-            borderBottom: 1, borderColor: 'divider', maxWidth: 350, display: 'flex', justifyContent: 'center', marginX: 'auto',
+            display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
           }}
           >
-            <TabList
-              onChange={handleChange}
-              aria-label="lab API tabs example"
-              className={classes.tabList}
-            >
-              <Tab label="Single" value="1" />
-              <Tab label="Semi Private" value="2" />
-              <Tab label="Private" value="3" />
-            </TabList>
+            <Image src="/images/image_single.svg" width={500} height={400} />
+            <Box maxWidth={350} marginX={10}>
+              <Typography>
+                Tipe single adalah tipe pemakaman yang paling murah dan paling banyak
+                digunakan. Tipe ini berukuran 1,5x2,6 meter2 dan dapat menampung
+                maksimal 1 orang. Harga untuk tipe ini mulai dari Rp 10.000.000,-.
+              </Typography>
+              <Button className={classes.button} onClick={() => handleAction(value)}>
+                Cek Ketersediaan
+              </Button>
+            </Box>
           </Box>
-          <TabPanel value="1">
-            <Box sx={{
-              display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
-            }}
-            >
-              <Image src="/images/image_single.svg" width={500} height={400} />
-              <Box maxWidth={350} marginX={10}>
-                <Typography>
-                  Tipe single adalah tipe pemakaman yang paling murah dan paling banyak
-                  digunakan. Tipe ini berukuran 1,5x2,6 meter2 dan dapat menampung
-                  maksimal 1 orang. Harga untuk tipe ini mulai dari Rp 10.000.000,-.
-                </Typography>
-                <Button className={classes.button}>
-                  Cek Ketersediaan
-                </Button>
-              </Box>
+        </TabPanel>
+        <TabPanel value="semi private">
+          <Box sx={{
+            display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
+          }}
+          >
+            <Box maxWidth={400} marginX={10} textAlign="right">
+              <Typography>
+                Tipe semi private adalah tipe pemakaman yang cocok untuk keluarga kecil atau
+                pasangan. Tipe ini berukuran 11-15 meter2 dan dapat menampung
+                sebanyak 2-3 orang. Harga untuk tipe ini mulai dari Rp 35.000.000,-.
+              </Typography>
+              <Button className={classes.button} onClick={() => handleAction(value)}>
+                Cek Ketersediaan
+              </Button>
             </Box>
-          </TabPanel>
-          <TabPanel value="2">
-            <Box sx={{
-              display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
-            }}
-            >
-              <Box maxWidth={400} marginX={10} textAlign="right">
-                <Typography>
-                  Tipe semi private adalah tipe pemakaman yang cocok untuk keluarga kecil atau
-                  pasangan. Tipe ini berukuran 11-15 meter2 dan dapat menampung
-                  sebanyak 2-3 orang. Harga untuk tipe ini mulai dari Rp 35.000.000,-.
-                </Typography>
-                <Button className={classes.button}>
-                  Cek Ketersediaan
-                </Button>
-              </Box>
-              <Image src="/images/image_semiprivate.svg" width={500} height={400} />
+            <Image src="/images/image_semiprivate.svg" width={500} height={400} />
+          </Box>
+        </TabPanel>
+        <TabPanel value="private">
+          <Box sx={{
+            display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
+          }}
+          >
+            <Image src="/images/image_private.svg" width={500} height={400} />
+            <Box maxWidth={350} marginX={10}>
+              <Typography>
+                Tipe private adalah tipe pemakaman yang cocok untuk keluarga besar
+                atau kelompok orang. Tipe ini berukuran 30-50 meter2 dan dapat menampung
+                sebanyak 2-14 orang. Harga untuk tipe ini mulai dari Rp 100.000.000,-.
+              </Typography>
+              <Button className={classes.button} onClick={() => handleAction(value)}>
+                Cek Ketersediaan
+              </Button>
             </Box>
-          </TabPanel>
-          <TabPanel value="3">
-            <Box sx={{
-              display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center', marginX: 'auto',
-            }}
-            >
-              <Image src="/images/image_private.svg" width={500} height={400} />
-              <Box maxWidth={350} marginX={10}>
-                <Typography>
-                  Tipe private adalah tipe pemakaman yang cocok untuk keluarga besar
-                  atau kelompok orang. Tipe ini berukuran 30-50 meter2 dan dapat menampung
-                  sebanyak 2-14 orang. Harga untuk tipe ini mulai dari Rp 100.000.000,-.
-                </Typography>
-                <Button className={classes.button}>
-                  Cek Ketersediaan
-                </Button>
-              </Box>
-            </Box>
-          </TabPanel>
-        </TabContext>
-      </Box>
-      <Footer />
-    </>
+          </Box>
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }

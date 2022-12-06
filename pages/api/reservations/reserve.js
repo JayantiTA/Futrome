@@ -3,8 +3,9 @@ import nextConnect from 'next-connect';
 import auth from '../../../middleware/auth';
 import connectToDatabase from '../../../lib/mongoose';
 import Reservation from '../../../models/reservation';
+import Grave from '../../../models/grave';
 
-import { errorHandler } from '../../../helper/error';
+import { notFoundError, errorHandler } from '../../../helper/error';
 
 const handler = nextConnect({
   onError: errorHandler,
@@ -18,16 +19,36 @@ const handler = nextConnect({
 
 handler
   .use(auth())
-  .post(async (req, res) => {
+  .post(async (req, res, next) => {
     await connectToDatabase();
     const reservation = await Reservation.create({
-      buyer_id: req.user._id,
       status: 'waiting for payment',
+      buyer_id: req.user._id,
       ...req.body,
       reserved_at: new Date(),
       created_at: new Date(),
       updated_at: new Date(),
     });
+
+    const grave = await Grave.findByIdAndUpdate(
+      req.body.grave.id,
+      {
+        status: 'reserved',
+        updated_at: new Date(),
+      },
+      {
+        runValidators: true,
+        context: 'query',
+        new: true,
+      },
+    );
+
+    if (!grave) {
+      return next({
+        name: notFoundError,
+        message: 'Grave not found',
+      });
+    }
 
     return res.json({
       message: 'Success',
