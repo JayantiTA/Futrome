@@ -22,9 +22,9 @@ handler
   .use(auth())
   .post(async (req, res, next) => {
     await connectToDatabase();
-    const filter = { _id: req.body.reservation_id };
+    const filter = { _id: req.body.reservation_id, buyer: {} };
     if (req.user.role !== 'admin') {
-      filter.buyer_id = req.user._id;
+      filter.buyer.id = req.user._id;
     }
 
     const reservation = await Reservation.findOne(filter);

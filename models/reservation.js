@@ -9,20 +9,9 @@ const reservationSchema = new Schema(
         type: Schema.Types.ObjectId,
         default: new mongoose.Types.ObjectId(),
       },
-      location: {
-        type: String,
-      },
-      type: {
-        type: String,
-        enum: {
-          values: ['single', 'semi private', 'private'],
-          message: '{VALUE} is not a valid status',
-        },
-        required: [true, 'Size is required'],
-      },
       price: {
         type: Number,
-        min: [1, 'Price minimum is 1, got {VALUE}'],
+        required: [true, 'Price is required'],
       },
       _id: false,
     },
@@ -48,7 +37,7 @@ const reservationSchema = new Schema(
     status: {
       type: String,
       enum: {
-        values: ['waiting for payment', 'waiting for confirmation', 'paid', 'cancelled'],
+        values: ['waiting for payment', 'waiting for confirmation', 'paid', 'cancelled', 'done'],
         message: '{VALUE} is not a valid status',
       },
       default: 'pending',

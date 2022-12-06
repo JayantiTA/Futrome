@@ -24,7 +24,7 @@ handler
     await connectToDatabase();
     const reservation = await Reservation.findById(req.body._id);
 
-    if (!reservation || reservation.buyer_id.toString() !== req.user._id.toString()) {
+    if (!reservation || reservation.buyer?.id.toString() !== req.user._id.toString()) {
       return next({
         name: notFoundError,
         message: 'Reservation not found',
@@ -45,8 +45,8 @@ handler
 
     const payment = await Payment.create({
       reservation_id: reservation._id,
-      ...req.body,
-      attachment: decodeBase64Image(req.body.attachment),
+      ...req.body.data,
+      attachment: decodeBase64Image(req.body.data.attachment),
     });
 
     return res.json({

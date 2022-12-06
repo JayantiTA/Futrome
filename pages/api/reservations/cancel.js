@@ -3,6 +3,7 @@ import nextConnect from 'next-connect';
 import auth from '../../../middleware/auth';
 import connectToDatabase from '../../../lib/mongoose';
 import Reservation from '../../../models/reservation';
+import Grave from '../../../models/grave';
 
 import { localValidationError, notFoundError, errorHandler } from '../../../helper/error';
 
@@ -22,7 +23,7 @@ handler
     await connectToDatabase();
     const reservation = await Reservation.findById(req.body._id);
 
-    if (!reservation || reservation.buyer_id.toString() !== req.user._id.toString()) {
+    if (!reservation || reservation.buyer?.id.toString() !== req.user._id.toString()) {
       return next({
         name: notFoundError,
         message: 'Order not found',
@@ -33,6 +34,26 @@ handler
       return next({
         name: localValidationError,
         message: 'Invalid reservation status',
+      });
+    }
+
+    const grave = await Grave.findByIdAndUpdate(
+      req.body.grave?.id,
+      {
+        status: 'available',
+        updated_at: new Date(),
+      },
+      {
+        runValidators: true,
+        context: 'query',
+        new: true,
+      },
+    );
+
+    if (!grave) {
+      return next({
+        name: notFoundError,
+        message: 'Grave not found',
       });
     }
 

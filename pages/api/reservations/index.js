@@ -22,9 +22,9 @@ handler
     await connectToDatabase();
     const { limit, skip } = req.query;
 
-    const filter = {};
+    const filter = { buyer: {} };
     if (req.user.role !== 'admin') {
-      filter.buyer_id = req.user._id;
+      filter.buyer.id = req.user._id;
     }
 
     const totalRecords = await Reservation.countDocuments();

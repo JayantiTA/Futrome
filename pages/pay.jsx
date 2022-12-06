@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
 
 import DefaultInput from '../components/input/DefaultInput';
 import FileInput from '../components/input/FileInput';
 import SelectInput from '../components/input/SelectInput';
+
+import { useAuthStore } from '../store/store';
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -40,21 +45,84 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function ModalConfirmation(props) {
+  const {
+    open, handleClose, handleConfirm, isLoading,
+  } = props;
+
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <Box
+        backgroundColor="#B6BCA4"
+        maxWidth={450}
+        borderRadius={2}
+        padding={2}
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        <Typography variant="h6">Anda yakin ingin membatalkan pesanan?</Typography>
+        <LoadingButton
+          sx={{
+            backgroundColor: '#195A00', color: '#FFFFFF', textTransform: 'none', margin: 1, float: 'right',
+          }}
+          onClick={handleConfirm}
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          Batalkan Pesanan
+        </LoadingButton>
+        <Button
+          sx={{
+            backgroundColor: '#D9D9D9', color: '#4A4A4A', textTransform: 'none', margin: 1, float: 'right',
+          }}
+          onClick={handleClose}
+        >
+          Kembali
+
+        </Button>
+      </Box>
+    </Modal>
+  );
+}
+
 export default function Pay() {
   const classes = useStyles();
+  const router = useRouter();
+  const session = useAuthStore((state) => state.session);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModalCofirmation, setShowModalCofirmation] = useState(false);
   const [errorFileInput, setErrorFileInput] = useState('');
   const [paymentData, setPaymentData] = useState({});
-  const [graveData, setGraveData] = useState({
-    type: 'Single',
-    location: 'D1',
-    size: 3.75,
-    capacity: 1,
-    price: 10000000,
-  });
+  const [reservationData, setReservationData] = useState({});
   let uploadedImage = '';
 
-  const handleUploadImage = (images) => {
+  const getData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`/api/reservations/${router.query?.id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+      setReservationData(response.data.data.reservation);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
+
+  function handleUploadImage(images) {
     const imageFiles = Array.from(images);
     [...imageFiles].forEach((image) => {
       if (image.size > 5000000) {
@@ -67,6 +135,29 @@ export default function Pay() {
       };
       reader.readAsDataURL(image);
     });
+  }
+
+  const handleShowConfirmation = () => {
+    setShowModalCofirmation(!showModalCofirmation);
+  };
+
+  const handleCancel = async () => {
+    try {
+      setIsLoading(true);
+      await axios.post('/api/reservations/cancel', {
+        _id: router.query?.id,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+      router.push('/profile');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+    setIsLoading(false);
   };
 
   const formInputs = [
@@ -123,11 +214,22 @@ export default function Pay() {
     try {
       setIsLoading(true);
       const body = {
-        ...paymentData, attachment: uploadedImage,
+        _id: reservationData._id,
+        data: {
+          ...paymentData, attachment: uploadedImage,
+        },
       };
-    } catch {
-      setIsLoading(false);
+      axios.post('/api/reservations/pay', body, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-undef
+      console.error(error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -149,11 +251,11 @@ export default function Pay() {
             Total Tagihan
           </Typography>
           <Typography variant="h4" sx={{ color: '#195A00' }}>
-            {formatter.format(graveData.price)}
+            {formatter.format(reservationData.grave?.price)}
           </Typography>
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <Button variant="contained" className={classes.button2} href="/payment_method">
+          <Button variant="contained" className={classes.button2} onClick={() => handleShowConfirmation()}>
             Batalkan Pesanan
           </Button>
           <LoadingButton variant="contained" type="submit" className={classes.button} loading={isLoading} disabled={isLoading}>
@@ -161,6 +263,12 @@ export default function Pay() {
           </LoadingButton>
         </Box>
       </Box>
+      <ModalConfirmation
+        open={showModalCofirmation}
+        handleClose={handleShowConfirmation}
+        handleConfirm={handleCancel}
+        isLoading={isLoading}
+      />
     </Box>
   );
 }
