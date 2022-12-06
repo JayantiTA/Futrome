@@ -23,6 +23,7 @@ handler
     await connectToDatabase();
     const reservation = await Reservation.create({
       status: 'waiting for payment',
+      buyer_id: req.user._id,
       ...req.body,
       reserved_at: new Date(),
       created_at: new Date(),
@@ -30,7 +31,7 @@ handler
     });
 
     const grave = await Grave.findByIdAndUpdate(
-      req.body.grave?.id,
+      req.body.grave.id,
       {
         status: 'reserved',
         updated_at: new Date(),

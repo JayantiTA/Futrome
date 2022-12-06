@@ -19,11 +19,11 @@ const reservationSchema = new Schema(
       },
       _id: false,
     },
-    buyer: {
-      id: {
-        type: Schema.Types.ObjectId,
-        required: [true, 'Buyer ID is required'],
-      },
+    buyer_id: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'Buyer ID is required'],
+    },
+    buyer_data: {
       name: {
         type: String,
         required: [true, 'Buyer name is required'],

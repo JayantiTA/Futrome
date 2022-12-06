@@ -225,6 +225,7 @@ export default function Pay() {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       });
+      router.push('/profile');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -266,7 +267,7 @@ export default function Pay() {
       <ModalConfirmation
         open={showModalCofirmation}
         handleClose={handleShowConfirmation}
-        handleConfirm={() => handleCancel()}
+        handleConfirm={handleCancel}
         isLoading={isLoading}
       />
     </Box>

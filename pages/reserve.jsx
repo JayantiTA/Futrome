@@ -95,8 +95,7 @@ export default function Reserve() {
           type: graveData.type,
           price: graveData.price,
         },
-        buyer: {
-          id: session.user.id,
+        buyer_data: {
           name: buyerData.name,
           ktp: buyerData.ktp,
           phone_number: buyerData.phone,

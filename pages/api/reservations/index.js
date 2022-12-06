@@ -23,16 +23,16 @@ handler
     const { limit, skip } = req.query;
 
     const filter = {};
-    if (req.user.role !== 'admin') {
-      filter.buyer.id = req.user._id;
-    }
-
     const totalRecords = await Reservation.countDocuments();
+
+    if (req.user.role !== 'admin') {
+      filter.buyer_id = req.user._id;
+    }
     const reservations = await Reservation.find(filter).limit(limit).skip(limit * skip);
 
     return res.json({
       data: {
-        total_records: totalRecords,
+        total_records: req.user.role === 'admin' ? totalRecords : reservations.length,
         reservations,
       },
       message: 'Success',

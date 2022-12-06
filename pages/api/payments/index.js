@@ -24,7 +24,7 @@ handler
     await connectToDatabase();
     const filter = { _id: req.body.reservation_id };
     if (req.user.role !== 'admin') {
-      filter.buyer.id = req.user._id;
+      filter.buyer_id = req.user._id;
     }
 
     const reservation = await Reservation.findOne(filter);
