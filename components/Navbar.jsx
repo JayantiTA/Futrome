@@ -66,6 +66,7 @@ function Navbar() {
   };
 
   const logOut = () => {
+    handleCloseUserMenu();
     useAuthStore.setState({ session: undefined });
     router.push('/');
   };

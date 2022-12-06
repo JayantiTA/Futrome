@@ -39,6 +39,9 @@ export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
 
+  const pages = ['/login', '/register', '/admin'];
+  const routerPage = !pages.includes(router.pathname);
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -49,9 +52,9 @@ export default function MyApp(props) {
       <AuthGuard>
         <ThemeProvider theme={theme}>
           <NoSsr>
-            {router.pathname !== '/login' && router.pathname !== '/register' && (<Navbar />)}
+            {routerPage && (<Navbar />)}
             <Component {...pageProps} />
-            {router.pathname !== '/login' && router.pathname !== '/register' && (<Footer />)}
+            {routerPage && (<Footer />)}
           </NoSsr>
         </ThemeProvider>
       </AuthGuard>
