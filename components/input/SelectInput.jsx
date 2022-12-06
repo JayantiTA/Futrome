@@ -11,7 +11,7 @@ export default function SelectInput(props) {
   } = props;
 
   return (
-    <FormControl required>
+    <FormControl required fullWidth>
       <InputLabel id="demo-simple-select-required-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-required-label"
