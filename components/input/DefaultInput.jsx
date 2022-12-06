@@ -9,6 +9,7 @@ export default function DefaultInput(props) {
 
   return (
     <TextField
+      focused
       error={error}
       helperText={error}
       margin="normal"

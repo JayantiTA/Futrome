@@ -31,6 +31,7 @@ import { makeStyles } from '@mui/styles';
 import { useAuthStore } from '../../../store/store';
 import DefaultInput from '../../../components/input/DefaultInput';
 import SelectInput from '../../../components/input/SelectInput';
+import Sidebar from '../../../components/Sidebar';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -379,7 +380,7 @@ function ModalForm(props) {
   );
 }
 
-export default function UserTable() {
+export default function UsersTable() {
   const classes = useStyles();
   const columns = [
     { json: '_id', label: 'Id' },
@@ -445,98 +446,100 @@ export default function UserTable() {
   };
 
   return (
-    <Box className={classes.box}>
-      <Typography className={classes.typography}>Users Page</Typography>
-      <Snackbar
-        open={isAlertOpened}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-      >
-        <Alert
-          severity="success"
-          sx={{ backgroundColor: '#2F7D31', color: '#FFFFFF' }}
-          action={(
-            <IconButton
-              size="small"
-              aria-label="close"
-              sx={{ color: '#FFFFFF' }}
-              onClick={() => {
-                setIsAlertOpened(false);
-              }}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-            )}
+    <Sidebar>
+      <Box className={classes.box}>
+        <Typography className={classes.typography}>Users Page</Typography>
+        <Snackbar
+          open={isAlertOpened}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         >
-          Success!
-        </Alert>
-      </Snackbar>
-      <Container>
-        <Button className={classes.button} onClick={() => handleShowForm()}>
-          <AddIcon />
-          Create
-        </Button>
-        <TableContainer component={Paper}>
-          <Table stickyHeader sx={{ minWidth: 800 }}>
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell className={classes.tableHead}>{column.label}</TableCell>
-                ))}
-                <TableCell colSpan={2} align="center" className={classes.tableHead}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody className={classes.tableBody}>
-              {isLoading ? (
+          <Alert
+            severity="success"
+            sx={{ backgroundColor: '#2F7D31', color: '#FFFFFF' }}
+            action={(
+              <IconButton
+                size="small"
+                aria-label="close"
+                sx={{ color: '#FFFFFF' }}
+                onClick={() => {
+                  setIsAlertOpened(false);
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
+          >
+            Success!
+          </Alert>
+        </Snackbar>
+        <Container>
+          <Button className={classes.button} onClick={() => handleShowForm()}>
+            <AddIcon />
+            Create
+          </Button>
+          <TableContainer component={Paper}>
+            <Table stickyHeader sx={{ minWidth: 800 }}>
+              <TableHead>
                 <TableRow>
-                  <TableCell colSpan={columns.length + 1} align="center">
-                    <CircularProgress sx={{ color: '' }} />
-                  </TableCell>
+                  {columns.map((column) => (
+                    <TableCell className={classes.tableHead}>{column.label}</TableCell>
+                  ))}
+                  <TableCell colSpan={2} align="center" className={classes.tableHead}>Actions</TableCell>
                 </TableRow>
-              )
-                : rows.map((row) => (
-                  <TableRow
-                    key={row._id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    {columns.map((column) => (
-                      <TableCell>{row[column.json]}</TableCell>
-                    ))}
-                    <TableCell>
-                      <IconButton aria-label="edit" onClick={() => handleShowForm(row)}>
-                        <EditIcon color="warning" />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell>
-                      <IconButton aria-label="delete" onClick={() => handleShowConfirmation(row)}>
-                        <DeleteIcon color="error" />
-                      </IconButton>
+              </TableHead>
+              <TableBody className={classes.tableBody}>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={columns.length + 1} align="center">
+                      <CircularProgress sx={{ color: '' }} />
                     </TableCell>
                   </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-          <TablePagination
-            count={count}
-            page={skip}
-            onPageChange={(event, newPage) => setSkip(newPage)}
-            rowsPerPage={limit}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </TableContainer>
-      </Container>
-      <ModalConfirmation
-        open={showModalCofirmation}
-        handleClose={handleShowConfirmation}
-        user={tempUser}
-        postChange={getData}
-      />
-      <ModalForm
-        open={showModalForm}
-        handleClose={handleShowForm}
-        user={tempUser}
-        postChange={getData}
-      />
-    </Box>
+                )
+                  : rows.map((row) => (
+                    <TableRow
+                      key={row._id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      {columns.map((column) => (
+                        <TableCell>{row[column.json]}</TableCell>
+                      ))}
+                      <TableCell>
+                        <IconButton aria-label="edit" onClick={() => handleShowForm(row)}>
+                          <EditIcon color="warning" />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton aria-label="delete" onClick={() => handleShowConfirmation(row)}>
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+              count={count}
+              page={skip}
+              onPageChange={(event, newPage) => setSkip(newPage)}
+              rowsPerPage={limit}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </TableContainer>
+        </Container>
+        <ModalConfirmation
+          open={showModalCofirmation}
+          handleClose={handleShowConfirmation}
+          user={tempUser}
+          postChange={getData}
+        />
+        <ModalForm
+          open={showModalForm}
+          handleClose={handleShowForm}
+          user={tempUser}
+          postChange={getData}
+        />
+      </Box>
+    </Sidebar>
   );
 }

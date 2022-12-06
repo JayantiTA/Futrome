@@ -35,16 +35,19 @@ handler
       });
     }
 
+    const invalidStatus = ['waiting for payment', 'cancelled'];
     let payment;
-    if (reservation.status === 'paid') {
+    if (!invalidStatus.includes(reservation.status)) {
       payment = await Payment.findOne({ reservation_id: reservation._id });
-      payment.attachment = encodeBase64Image(payment.attachment);
     }
 
     return res.json({
       data: {
         reservation,
-        payment,
+        payment: {
+          ...payment._doc,
+          attachment: encodeBase64Image(payment.attachment),
+        },
       },
       message: 'Success',
       success: true,

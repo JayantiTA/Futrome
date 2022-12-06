@@ -90,7 +90,7 @@ export default function Invoice() {
           </>
         )}
       </Box>
-      {totalRecords > 0 && !isLoading && (
+      {totalRecords > 0 && !isLoading && session.user.role !== 'admin' && (
       <Box maxWidth={700} marginX="auto" marginTop={5} border={1} borderColor="#B6BCA4" borderRadius={2}>
         <Box display="flex" flexDirection="column" alignItems="center" marginTop={4}>
           <Typography variant="h5">Pesanan</Typography>
