@@ -20,8 +20,6 @@ const handler = nextConnect({
 handler
   .use(auth())
   .post(async (req, res, next) => {
-    await connectToDatabase();
-    console.log(req.body);
     const reservation = await Reservation.findById(req.body._id);
 
     if (!reservation) {
