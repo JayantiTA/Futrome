@@ -83,7 +83,7 @@ export default function Types() {
               <Typography>
                 Tipe single adalah tipe pemakaman yang paling murah dan paling banyak
                 digunakan. Tipe ini berukuran 1,5x2,6 meter2 dan dapat menampung
-                maksimal 1 orang. Harga untuk tipe ini mulai dari Rp 10.000.000,-.
+                maksimal 1 orang. Harga untuk tipe ini sebesar Rp 50.000.000,-.
               </Typography>
               <Button className={classes.button} onClick={() => handleAction(value)}>
                 Cek Ketersediaan
@@ -99,8 +99,8 @@ export default function Types() {
             <Box maxWidth={400} marginX={10} textAlign="right">
               <Typography>
                 Tipe semi private adalah tipe pemakaman yang cocok untuk keluarga kecil atau
-                pasangan. Tipe ini berukuran 11-15 meter2 dan dapat menampung
-                sebanyak 2-3 orang. Harga untuk tipe ini mulai dari Rp 35.000.000,-.
+                pasangan. Tipe ini berukuran 2,6x5 meter2 dan dapat menampung
+                sebanyak 2-3 orang. Harga untuk tipe ini sebesar Rp 150.000.000,-.
               </Typography>
               <Button className={classes.button} onClick={() => handleAction(value)}>
                 Cek Ketersediaan
@@ -118,8 +118,8 @@ export default function Types() {
             <Box maxWidth={350} marginX={10}>
               <Typography>
                 Tipe private adalah tipe pemakaman yang cocok untuk keluarga besar
-                atau kelompok orang. Tipe ini berukuran 30-50 meter2 dan dapat menampung
-                sebanyak 2-14 orang. Harga untuk tipe ini mulai dari Rp 100.000.000,-.
+                atau kelompok orang. Tipe ini berukuran 5,2x10 meter2 dan dapat menampung
+                maksimal 12 orang. Harga untuk sebesar dari Rp 600.000.000,-.
               </Typography>
               <Button className={classes.button} onClick={() => handleAction(value)}>
                 Cek Ketersediaan

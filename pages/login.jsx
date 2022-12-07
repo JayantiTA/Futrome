@@ -136,7 +136,6 @@ export default function Login() {
           }}
         >
           <HomeIcon />
-          <Typography variant="body1">Home</Typography>
         </IconButton>
         <Box
           sx={{
