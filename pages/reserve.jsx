@@ -75,7 +75,7 @@ export default function Reserve() {
         'Tipe:': response.data.data.type,
         'Lokasi:': response.data.data.location,
         'Kapasitas:': response.data.data.capacity,
-        'Ukuran:': response.data.data.size,
+        'Ukuran:': `${response.data.data.size} m2`,
         'Deskripsi:': response.data.data.description,
         'Harga:': formatter.format(response.data.data.price),
       });
@@ -163,7 +163,7 @@ export default function Reserve() {
   };
 
   return (
-    <Box marginY={7}>
+    <Box marginY={7} minHeight="100vh">
       <Box sx={{
         borderBottom: 1, borderColor: 'divider', maxWidth: 400, mx: 'auto', display: 'flex', justifyContent: 'center',
       }}
