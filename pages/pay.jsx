@@ -253,7 +253,7 @@ export default function Pay() {
   };
 
   return (
-    <Box marginY={7}>
+    <Box marginY={7} minHeight="100vh">
       <Box sx={{
         borderBottom: 1, borderColor: 'divider', maxWidth: 400, mx: 'auto', display: 'flex', justifyContent: 'center',
       }}
