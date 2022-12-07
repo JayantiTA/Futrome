@@ -136,7 +136,9 @@ export default function ReservationTable() {
   };
 
   useEffect(() => {
-    getReservationData();
+    if (router.query.reservationId) {
+      getReservationData();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
