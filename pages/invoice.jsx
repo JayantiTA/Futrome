@@ -91,10 +91,6 @@ export default function Invoice() {
     router.push({ pathname: '/pay', query: { id } });
   };
 
-  const handleFuneral = (id) => {
-    router.push({ pathname: '/funeral', query: { graveId: id } });
-  };
-
   const actions = () => {
     switch (reservationData.status) {
       case 'waiting for payment':
@@ -116,12 +112,12 @@ export default function Invoice() {
         );
       case 'done':
         return (
-          <Button
-            className={classes.button}
-            onClick={() => handleFuneral(reservationData.grave?.id)}
-          >
-            Jadwalkan Pemakaman
-          </Button>
+          <>
+            <Typography>Jika Anda ingin melakukan upacara pemakaman, </Typography>
+            <Typography>silakan hubungi kontak yang tertera pada:</Typography>
+            <Button className={classes.button} href="/contact">Kontak Kami</Button>
+            <Typography variant="body2">(maksimal 3 jam sebelum pemakaman)</Typography>
+          </>
         );
       default:
         break;
