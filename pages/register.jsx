@@ -1,8 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Link from 'next/link';
 import axios from 'axios';
 
 import Grid from '@mui/material/Grid';
@@ -13,6 +11,8 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import HomeIcon from '@mui/icons-material/Home';
+import Link from '@mui/material/Link';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
 
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     backgroundColor: theme.palette.green.main,
+    color: theme.palette.white.main,
     minHeight: 50,
     marginTop: 10,
     marginBottom: 10,
@@ -165,6 +166,14 @@ export default function Login() {
         <Typography variant="h5" className={classes.title}>Your future home is here.</Typography>
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <IconButton
+          href="/home"
+          sx={{
+            marginLeft: 3, marginTop: 1, color: '#195A00',
+          }}
+        >
+          <HomeIcon />
+        </IconButton>
         <Box
           sx={{
             my: 4,
@@ -217,9 +226,7 @@ export default function Login() {
             <Grid container justifyContent="flex-end">
               <Typography className={classes.typography}>
                 Already have an account? &nbsp;
-                <a style={{ textDecoration: 'underline' }}>
-                  <Link href="/login">Sign In</Link>
-                </a>
+                <Link href="/login">Sign In</Link>
               </Typography>
             </Grid>
           </Box>

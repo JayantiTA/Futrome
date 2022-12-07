@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@mui/material/Link';
 import axios from 'axios';
 
 import Grid from '@mui/material/Grid';
@@ -12,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import HomeIcon from '@mui/icons-material/Home';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
@@ -129,6 +129,15 @@ export default function Login() {
         </Box>
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <IconButton
+          href="/home"
+          sx={{
+            marginLeft: 3, marginTop: 1, color: '#195A00',
+          }}
+        >
+          <HomeIcon />
+          <Typography variant="body1">Home</Typography>
+        </IconButton>
         <Box
           sx={{
             my: 12,
@@ -138,7 +147,7 @@ export default function Login() {
             alignItems: 'left',
           }}
         >
-          <Typography component="h1" variant="h4" sx={{ mt: 3, mb: 5 }}>
+          <Typography component="h1" variant="h4" sx={{ my: 3 }}>
             Sign In
           </Typography>
           <Snackbar
@@ -181,9 +190,7 @@ export default function Login() {
             <Grid container justifyContent="flex-end">
               <Typography className={classes.typography}>
                 Don&apos;t have an account? &nbsp;
-                <a style={{ textDecoration: 'underline' }}>
-                  <Link href="/register">Sign Up</Link>
-                </a>
+                <Link href="/register">Sign Up</Link>
               </Typography>
             </Grid>
           </Box>
