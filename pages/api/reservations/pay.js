@@ -8,6 +8,14 @@ import Payment from '../../../models/payment';
 import { localValidationError, notFoundError, errorHandler } from '../../../helper/error';
 import { decodeBase64Image, encodeBase64Image } from '../../../helper/image';
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '6mb',
+    },
+  },
+};
+
 const handler = nextConnect({
   onError: errorHandler,
   onNoMatch: (req, res) => {
@@ -38,16 +46,16 @@ handler
       });
     }
 
+    const payment = await Payment.create({
+      reservation_id: req.body._id,
+      ...req.body.data,
+      attachment: decodeBase64Image(req.body.data.attachment),
+    });
+
     reservation.status = 'waiting for confirmation';
     reservation.paid_at = new Date();
     reservation.updated_at = new Date();
     await reservation.save();
-
-    const payment = await Payment.create({
-      reservation_id: reservation._id,
-      ...req.body.data,
-      attachment: decodeBase64Image(req.body.data.attachment),
-    });
 
     return res.json({
       message: 'Pay success',

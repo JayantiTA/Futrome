@@ -40,14 +40,15 @@ handler
     if (!invalidStatus.includes(reservation.status)) {
       payment = await Payment.findOne({ reservation_id: reservation._id });
     }
+    const paymentData = payment ? {
+      ...payment?._doc,
+      attachment: encodeBase64Image(payment?.attachment),
+    } : null;
 
     return res.json({
       data: {
         reservation,
-        payment: {
-          ...payment._doc,
-          attachment: encodeBase64Image(payment.attachment),
-        },
+        payment: paymentData,
       },
       message: 'Success',
       success: true,
