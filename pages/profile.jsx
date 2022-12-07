@@ -82,7 +82,7 @@ export default function Invoice() {
   }, [router]);
 
   return (
-    <Box marginY={7}>
+    <Box marginY={7} minHeight="100vh">
       <Box maxWidth={700} marginX="auto" border={1} borderColor="#B6BCA4" borderRadius={2} display="flex" flexDirection="column">
         {isLoading ? (
           <CircularProgress sx={{ color: '#195A00', marginX: 'auto' }} />

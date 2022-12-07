@@ -53,8 +53,9 @@ export default function Invoice() {
       setDetailGrave({
         'Tipe:': response.data.data.type,
         'Lokasi:': response.data.data.location,
-        'Ukuran:': response.data.data.size,
+        'Ukuran:': `${response.data.data.size} m2`,
         'Kapasitas:': response.data.data.capacity,
+        'Deskripsi:': response.data.data.description,
         'Harga:': formatter.format(response.data.data.price),
       });
     } catch (error) {
@@ -124,6 +125,7 @@ export default function Invoice() {
         display="flex"
         justifyContent="center"
         marginBottom={5}
+        minHeight="100vh"
       >
         <Typography variant="h4" fontWeight={700} sx={{ color: '#195A00', my: 1, mx: 'auto' }}>
           Invoice

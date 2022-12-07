@@ -193,7 +193,7 @@ export default function Invoice() {
   }));
 
   return (
-    <Box marginY={7} display="flex" flexDirection="column" alignItems="center">
+    <Box marginY={7} display="flex" flexDirection="column" alignItems="center" minHeight="100vh">
       <TabContext value={value}>
         {isLoading ? (
           <CircularProgress sx={{ color: '#195A00', marginX: 'auto' }} />
