@@ -91,6 +91,10 @@ export default function Invoice() {
     router.push({ pathname: '/pay', query: { id } });
   };
 
+  const handleFuneral = (id) => {
+    router.push({ pathname: '/funeral', query: { graveId: id } });
+  };
+
   const actions = () => {
     switch (reservationData.status) {
       case 'waiting for payment':
@@ -110,13 +114,22 @@ export default function Invoice() {
             <Button className={classes.button} href="/contact">Kontak dan Alamat</Button>
           </>
         );
+      case 'done':
+        return (
+          <Button
+            className={classes.button}
+            onClick={() => handleFuneral(reservationData.grave?.id)}
+          >
+            Jadwalkan Pemakaman
+          </Button>
+        );
       default:
         break;
     }
   };
 
   return (
-    <Box marginY={7}>
+    <Box marginY={7} minHeight="100vh">
       <Box
         borderBottom={1}
         borderColor="divider"
@@ -125,7 +138,6 @@ export default function Invoice() {
         display="flex"
         justifyContent="center"
         marginBottom={5}
-        minHeight="100vh"
       >
         <Typography variant="h4" fontWeight={700} sx={{ color: '#195A00', my: 1, mx: 'auto' }}>
           Invoice
