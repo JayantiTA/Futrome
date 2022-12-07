@@ -229,7 +229,7 @@ export default function Invoice() {
       <Box width={500} marginX="auto" border={1} borderColor="#B6BCA4" borderRadius={2} padding={2}>
         <Typography variant="h5">Harga</Typography>
         <Typography variant="h4" fontWeight={700}>{formatter.format(currentGrave.price)}</Typography>
-        <Typography variant="h5">Location</Typography>
+        <Typography variant="h5">Lokasi</Typography>
         <Typography variant="h4" fontWeight={600}>{currentGrave.location}</Typography>
         <Typography variant="body1">{currentGrave.description}</Typography>
         <LoadingButton

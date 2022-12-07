@@ -194,7 +194,7 @@ export default function GravesData() {
 
   return (
     <Sidebar>
-      <Box display="flex" flexDirection="column" alignItems="center" backgroundColor="#E5EAE2">
+      <Box display="flex" flexDirection="column" alignItems="center" backgroundColor="#E5EAE2" minHeight="100vh">
         <Typography className={classes.typography}>Graves Page</Typography>
         <Snackbar
           open={isAlertOpened}
@@ -229,7 +229,7 @@ export default function GravesData() {
         <Box width={500} marginX="auto" border={1} borderColor="#B6BCA4" borderRadius={2} padding={2} marginY={2}>
           <Typography variant="h5">Harga:</Typography>
           <Typography variant="h4" fontWeight={700}>{formatter.format(currentGrave.price)}</Typography>
-          <Typography variant="h5">Location:</Typography>
+          <Typography variant="h5">Lokasi:</Typography>
           <Typography variant="h4" fontWeight={600}>{currentGrave.location}</Typography>
           <Typography variant="body1">{currentGrave.description}</Typography>
           <Typography variant="h5">{`Status: ${currentGrave.status}`}</Typography>
