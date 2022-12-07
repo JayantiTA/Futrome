@@ -98,6 +98,10 @@ export default function Login() {
         setIsLoading(true);
         const response = await axios.post('/api/users/login', user);
         useAuthStore.setState({ session: response.data.data });
+        if (response.data.data.user.role === 'admin') {
+          router.push('/admin');
+          return;
+        }
         router.push('/');
       } catch (error) {
         // eslint-disable-next-line no-console

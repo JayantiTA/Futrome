@@ -6,6 +6,10 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
 
@@ -93,6 +97,8 @@ export default function Pay() {
   const classes = useStyles();
   const router = useRouter();
   const session = useAuthStore((state) => state.session);
+  const [errors, setErrors] = useState({});
+  const [isAlertOpened, setIsAlertOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModalCofirmation, setShowModalCofirmation] = useState(false);
   const [errorFileInput, setErrorFileInput] = useState('');
@@ -123,6 +129,10 @@ export default function Pay() {
   }, [router]);
 
   function handleUploadImage(images) {
+    if (images.length === 0) {
+      setErrorFileInput('File tidak boleh kosong');
+      return;
+    }
     const imageFiles = Array.from(images);
     [...imageFiles].forEach((image) => {
       if (image.size > 5000000) {
@@ -152,10 +162,12 @@ export default function Pay() {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       });
-      router.push('/profile');
+      router.push({ pathname: '/profile', query: { success: true } });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      setErrors(error.response.data);
+      setIsAlertOpened(true);
     }
     setIsLoading(false);
   };
@@ -169,6 +181,7 @@ export default function Pay() {
         onChange: (e) => setPaymentData({ ...paymentData, bank: e.target.value }),
         isLoading,
         lists: ['BRI', 'BNI', 'Mandiri', 'BSI', 'BCA'],
+        error: errors?.errors?.bank,
       },
     },
     {
@@ -182,6 +195,7 @@ export default function Pay() {
           bank_account: { ...paymentData.bank_account, name: e.target.value },
         }),
         isLoading,
+        error: errors?.errors ? errors?.errors['bank_account.name'] : null,
       },
     },
     {
@@ -195,12 +209,13 @@ export default function Pay() {
           bank_account: { ...paymentData.bank_account, number: e.target.value },
         }),
         isLoading,
+        error: errors?.errors ? errors?.errors['bank_account.number'] : null,
       },
     },
     {
       component: FileInput,
       props: {
-        label: 'Bukti Pembayaran',
+        label: 'Bukti Pembayaran*',
         value: paymentData.attachment,
         onChange: (e) => handleUploadImage(e.target.files),
         isLoading,
@@ -211,26 +226,30 @@ export default function Pay() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      setIsLoading(true);
-      const body = {
-        _id: reservationData._id,
-        data: {
-          ...paymentData, attachment: uploadedImage,
-        },
-      };
-      axios.post('/api/reservations/pay', body, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      });
-      router.push('/profile');
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-    setIsLoading(false);
+    (async () => {
+      try {
+        setIsLoading(true);
+        const body = {
+          _id: reservationData._id,
+          data: {
+            ...paymentData, attachment: uploadedImage,
+          },
+        };
+        await axios.post('/api/reservations/pay', body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+        router.push({ pathname: '/profile', query: { success: true } });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        setErrors(error.response.data);
+        setIsAlertOpened(true);
+      }
+      setIsLoading(false);
+    })();
   };
 
   return (
@@ -239,11 +258,35 @@ export default function Pay() {
         borderBottom: 1, borderColor: 'divider', maxWidth: 400, mx: 'auto', display: 'flex', justifyContent: 'center',
       }}
       >
+        <Snackbar
+          open={isAlertOpened}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        >
+          <Alert
+            severity="error"
+            sx={{ backgroundColor: '#D23030', color: '#FFFFFF' }}
+            action={(
+              <IconButton
+                size="small"
+                aria-label="close"
+                sx={{ color: '#FFFFFF' }}
+                onClick={() => {
+                  setIsAlertOpened(false);
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
+          >
+            {errors?.message}
+          </Alert>
+        </Snackbar>
         <Typography variant="h4" fontWeight={700} sx={{ color: '#195A00', my: 1, mx: 'auto' }}>
           Konfirmasi Pembayaran
         </Typography>
       </Box>
-      <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" maxWidth={700} marginX="auto" marginTop={3}>
+      <Box component="form" noValidate onSubmit={handleSubmit} display="flex" flexDirection="column" maxWidth={700} marginX="auto" marginTop={3}>
         {formInputs.map((input) => (
           <input.component {...input.props} />
         ))}

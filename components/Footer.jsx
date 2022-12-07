@@ -13,6 +13,7 @@ export default function Footer() {
       backgroundColor: '#195A00',
       padding: 2,
       marginTop: 15,
+      bottom: 0,
     }}
     >
       <Typography variant="h7" sx={{ color: '#FFFFFF' }}>&#169;&nbsp;Futrome 2022</Typography>

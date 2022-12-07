@@ -9,6 +9,9 @@ export default function SelectInput(props) {
   const {
     label, value, lists, onChange, isLoading,
   } = props;
+  if (!lists.includes(value)) {
+    lists.push(value);
+  }
 
   return (
     <FormControl required fullWidth>

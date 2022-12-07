@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+import validator from 'validator';
 
+const { isNumeric } = validator;
 const { Schema } = mongoose;
 
 const paymentSchema = new Schema(
@@ -24,6 +26,10 @@ const paymentSchema = new Schema(
       number: {
         type: String,
         required: [true, 'Account Number is required'],
+        validate: {
+          validator: isNumeric,
+          message: '{VALUE} is not a valid bank account number',
+        },
       },
     },
     attachment: {

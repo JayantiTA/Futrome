@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+import validator from 'validator';
 
+const { isNumeric, isMobilePhone } = validator;
 const { Schema } = mongoose;
 
 const reservationSchema = new Schema(
@@ -31,9 +33,17 @@ const reservationSchema = new Schema(
       ktp: {
         type: String,
         required: [true, 'Buyer KTP is required'],
+        validate: {
+          validator: isNumeric,
+          message: '{VALUE} is not a valid ktp number',
+        },
       },
       phone_number: {
         type: String,
+        validate: {
+          validator: isMobilePhone,
+          message: '{VALUE} is not a valid phone number',
+        },
         required: [true, 'Buyer phone number is required'],
       },
       _id: false,
@@ -41,7 +51,7 @@ const reservationSchema = new Schema(
     status: {
       type: String,
       enum: {
-        values: ['waiting for payment', 'waiting for confirmation', 'paid', 'cancelled', 'done'],
+        values: ['waiting for payment', 'waiting for confirmation', 'paid', 'cancelled', 'done', 'rejected'],
         message: '{VALUE} is not a valid status',
       },
       default: 'pending',
@@ -52,10 +62,16 @@ const reservationSchema = new Schema(
     paid_at: {
       type: Date,
     },
+    rejected_at: {
+      type: Date,
+    },
     confirmed_at: {
       type: Date,
     },
     cancelled_at: {
+      type: Date,
+    },
+    done_at: {
       type: Date,
     },
   },

@@ -10,6 +10,10 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { makeStyles } from '@mui/styles';
 
@@ -50,6 +54,8 @@ export default function Reserve() {
   const classes = useStyles();
   const router = useRouter();
   const session = useAuthStore((state) => state.session);
+  const [errors, setErrors] = useState({});
+  const [isAlertOpened, setIsAlertOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [buyerData, setBuyerData] = useState({});
   const [graveData, setGraveData] = useState({});
@@ -69,7 +75,7 @@ export default function Reserve() {
         'Tipe:': response.data.data.type,
         'Lokasi:': response.data.data.location,
         'Kapasitas:': response.data.data.capacity,
-        'Ukuran:': response.data.data.size,
+        'Ukuran:': `${response.data.data.size} m2`,
         'Deskripsi:': response.data.data.description,
         'Harga:': formatter.format(response.data.data.price),
       });
@@ -85,37 +91,6 @@ export default function Reserve() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const handleAction = (event) => {
-    event.preventDefault();
-    try {
-      const body = {
-        grave: {
-          id: graveData._id,
-          location: graveData.location,
-          type: graveData.type,
-          price: graveData.price,
-        },
-        buyer_data: {
-          name: buyerData.name,
-          ktp: buyerData.ktp,
-          phone_number: buyerData.phone,
-        },
-      };
-      setIsLoading(true);
-      axios.post('/api/reservations/reserve', body, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      });
-      router.push('/profile');
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-    setIsLoading(false);
-  };
-
   const formInputs = [
     {
       component: DefaultInput,
@@ -124,6 +99,7 @@ export default function Reserve() {
         type: 'text',
         value: buyerData.name,
         onChange: (e) => setBuyerData({ ...buyerData, name: e.target.value }),
+        error: errors?.errors ? errors?.errors['buyer_data.name'] : null,
         isLoading,
       },
     },
@@ -134,6 +110,7 @@ export default function Reserve() {
         type: 'text',
         value: buyerData.ktp,
         onChange: (e) => setBuyerData({ ...buyerData, ktp: e.target.value }),
+        error: errors?.errors ? errors?.errors['buyer_data.ktp'] : null,
         isLoading,
       },
     },
@@ -144,22 +121,82 @@ export default function Reserve() {
         type: 'text',
         value: buyerData.phone,
         onChange: (e) => setBuyerData({ ...buyerData, phone: e.target.value }),
+        error: errors?.errors ? errors?.errors['buyer_data.phone_number'] : null,
         isLoading,
       },
     },
   ];
 
+  const handleAction = (event) => {
+    event.preventDefault();
+    (async () => {
+      try {
+        setIsLoading(true);
+        const body = {
+          grave: {
+            id: graveData._id,
+            location: graveData.location,
+            type: graveData.type,
+            price: graveData.price,
+          },
+          buyer_data: {
+            name: buyerData.name,
+            ktp: buyerData.ktp,
+            phone_number: buyerData.phone,
+          },
+        };
+        await axios.post('/api/reservations/reserve', body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        });
+        router.push({ pathname: '/profile', query: { success: true } });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        setErrors(error.response.data);
+        setIsAlertOpened(true);
+      }
+      setIsLoading(false);
+    })();
+  };
+
   return (
-    <Box marginY={7}>
+    <Box marginY={7} minHeight="100vh">
       <Box sx={{
         borderBottom: 1, borderColor: 'divider', maxWidth: 400, mx: 'auto', display: 'flex', justifyContent: 'center',
       }}
       >
+        <Snackbar
+          open={isAlertOpened}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        >
+          <Alert
+            severity="error"
+            sx={{ backgroundColor: '#D23030', color: '#FFFFFF' }}
+            action={(
+              <IconButton
+                size="small"
+                aria-label="close"
+                sx={{ color: '#FFFFFF' }}
+                onClick={() => {
+                  setIsAlertOpened(false);
+                }}
+              >
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            )}
+          >
+            {errors?.message}
+          </Alert>
+        </Snackbar>
         <Typography variant="h4" fontWeight={700} sx={{ color: '#195A00', my: 1, mx: 'auto' }}>
           Data Pemesan
         </Typography>
       </Box>
-      <Box component="form" onSubmit={handleAction} display="flex" flexDirection="column" maxWidth={700} marginX="auto" marginTop={3}>
+      <Box component="form" noValidate onSubmit={handleAction} display="flex" flexDirection="column" maxWidth={700} marginX="auto" marginTop={3}>
         {formInputs.map((input) => (
           <input.component {...input.props} />
         ))}
